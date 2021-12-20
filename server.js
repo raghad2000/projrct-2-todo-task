@@ -22,6 +22,36 @@ app.get('/get2',(req,res)=>
     })
 
 })
+app.get('/get3',(req,res)=>
+{
+    Todo.find({isCompleted:"true"},(err,data)=>{
+        if(err)
+        {
+            console.log("Error:",err)
+        }
+        else{
+            res.json(data)
+           
+        }
+       
+    })
+
+})
+app.get('/get4',(req,res)=>
+{
+    Todo.find({isCompleted:"false"},(err,data)=>{
+        if(err)
+        {
+            console.log("Error:",err)
+        }
+        else{
+            res.json(data)
+           
+        }
+       
+    })
+
+})
 app.post("/tasks", (req, res) => {
     // console.log('25:',req.body);
   
