@@ -1,0 +1,26 @@
+{
+  "name": "projrct-2-todo-task",
+  "version": "1.0.0",
+  "main": "db.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "R":"nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/raghad2000/projrct-2-todo-task.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/raghad2000/projrct-2-todo-task/issues"
+  },
+  "homepage": "https://github.com/raghad2000/projrct-2-todo-task#readme",
+  "dependencies": {
+    "express": "^4.17.2",
+    "mongoose": "^6.1.2",
+    "nodemon": "^2.0.15"
+  },
+  "description": ""
+}
