@@ -52,7 +52,7 @@ app.get('/get4',(req,res)=>
     })
 
 })
-app.post("/tasks", (req, res) => {
+app.post("/taskss", (req, res) => {
     // console.log('25:',req.body);
   
     Todo.create(req.body, (err, newTask) => {
@@ -77,7 +77,7 @@ app.post("/tasks", (req, res) => {
       }
     });
   });
-  app.delete("/tasks", (req, res) => {
+  app.delete("/tasksD", (req, res) => {
     // console.log("37:", req.params.id);
   
     Todo.deleteMany({ isCompleted: true }, (err, deleteObj) => {
@@ -109,6 +109,25 @@ app.post("/tasks", (req, res) => {
       }
     );
   });
+  app.put("/tasks/:id/:isCompleted", (req, res) => {
+    console.log("124:", req.params);
+    Todo.updateOne(
+      { _id: req.params.id },
+      { isCompleted: req.params.isCompleted },
+      (err, updateObj) => {
+        if (err) {
+          // console.log("ERROR: ", err);
+          res.status(400).json(err);
+        } else {
+          console.log(updateObj);
+          updateObj.modifiedCount === 1
+            ? res.json("Update one todo successfully")
+            : res.status(404).json("This todo is not found");
+        }
+      }
+    );
+  });
+  
 app.listen(3000,()=>{
     console.log('Work')
 })
