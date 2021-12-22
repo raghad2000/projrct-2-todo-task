@@ -1,12 +1,18 @@
-import React from 'react'
+import React from "react";
 
 export default function Todo(props) {
-
-  const {_id,
-    title, isCompleted}=props.task
+  const { _id, title, isCompleted } = props.task;
   return (
-    <div className='Todo'>
-      <p>TITLE: {title}</p>
+    <div className="Todo">
+      <input type="checkbox" defaultChecked={isCompleted} onClick={()=>{
+         props.toggleTodo(_id,!isCompleted)
+      }}/>
+      <span style={{ textDecoration: isCompleted ? "line-through" : "none" }}>
+        {title}
+      </span>
+      <button onClick={() => {
+        props.deleteTodo(_id)
+      }}>X</button>
     </div>
-  )
+  );
 }

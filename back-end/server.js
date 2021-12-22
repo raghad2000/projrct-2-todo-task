@@ -1,135 +1,146 @@
-const exp=require('express')
-const app=exp()
-app.use(exp.json())
-const db=require('./db')
-const Todo=require('./todo')
-const cors=require('cors')
-app.use(cors())
-/*app.get('/tasks',(req,res)=>
-{
-    res.json('work')
+const express = require("express");
+const cors = require("cors");
+const app = express();
 
-})*/
-app.get('/tasks',(req,res)=>
-{
-    Todo.find({},(err,data)=>{
-        if(err)
-        {
-            console.log("Error:",err)
-        }
-        else{
-            res.json(data)
-           
-        }
-    })
+const db = require("./db");
+const Todo = require("./todo");
+// console.log(Todo);
 
-})
-app.get('/tasks',(req,res)=>
-{
-    Todo.find({isCompleted:"true"},(err,data)=>{
-        if(err)
-        {
-            console.log("Error:",err)
-        }
-        else{
-            res.json(data)
-           
-        }
-       
-    })
+app.use(express.json());
+app.use(cors());
 
-})
-app.get('/tasks',(req,res)=>
-{
-    Todo.find({isCompleted:"false"},(err,data)=>{
-        if(err)
-        {
-            console.log("Error:",err)
-        }
-        else{
-            res.json(data)
-           
-        }
-       
-    })
+app.get("/", (req, res) => {
+  res.json("GET / is Working");
+});
 
-})
-app.post("/taskss", (req, res) => {
-    // console.log('25:',req.body);
-  
-    Todo.create(req.body, (err, newTask) => {
-      if (err) {
-        console.log("ERROR: ", err);
-      } else {
-        res.status(201).json(newTask);
-        res.json("Creates Todo Successfuly")
-      }
-    });
+// CRUD: Create, Read, Update, Delete
+
+app.get("/tasks", (req, res) => {
+  Todo.find({}, (err, data) => {
+    if (err) {
+      console.log("ERROR: ", err);
+    } else {
+      res.json(data);
+    }
   });
-  app.delete("/tasks/:id", (req, res) => {
-    // console.log("37:", req.params.id);
-  
-    Todo.deleteOne({ _id: req.params.id }, (err, deleteObj) => {
+});
+
+//              ?key=value&key=value
+app.get("/filter", (req, res) => {
+  console.log(req.query);
+  Todo.find({ isCompleted: req.query.isCompleted }, (err, data) => {
+    if (err) {
+      console.log("ERR", err);
+    } else {
+      // console.log(data);
+      res.json(data);
+    }
+  });
+});
+
+app.post("/tasks", (req, res) => {
+  // console.log('25:',req.body);
+
+  Todo.create(req.body, (err, newTask) => {
+    if (err) {
+      console.log("ERROR: ", err);
+    } else {
+      res.status(201).json(newTask);
+    }
+  });
+});
+
+app.delete("/tasks/:id", (req, res) => {
+  // console.log("37:", req.params.id);
+
+  Todo.deleteOne({ _id: req.params.id }, (err, deleteObj) => {
+    if (err) {
+      console.log("ERROR: ", err);
+    } else {
+      deleteObj.deletedCount === 1
+        ? res.json("Delete one todo successfully")
+        : res.status(404).json("This todo is not found");
+    }
+  });
+});
+
+app.delete("/tasks", (req, res) => {
+  // console.log("37:", req.params.id);
+
+  Todo.deleteMany({ isCompleted: true }, (err, deleteObj) => {
+    if (err) {
+      console.log("ERROR: ", err);
+    } else {
+      console.log(deleteObj);
+      deleteObj.deletedCount === 0
+        ? res.status(404).json("There is no completed todo found")
+        : res.json("Delete all completed todos successfully");
+    }
+  });
+});
+
+app.put("/tasks/:id", (req, res) => {
+  // console.log("37:", req.params.id);
+  Todo.updateOne(
+    { _id: req.params.id },
+    { title: req.body.newTitle },
+    (err, updateObj) => {
       if (err) {
-        console.log("ERROR: ", err);
+        // console.log("ERROR: ", err);
+        res.status(400).json(err);
       } else {
-        deleteObj.deletedCount === 1
-          ? res.json("Delete one todo successfully")
+        console.log(updateObj);
+        updateObj.modifiedCount === 1
+          ? res.json("Update one todo successfully")
           : res.status(404).json("This todo is not found");
       }
-    });
-  });
-  app.delete("/tasksD", (req, res) => {
-    // console.log("37:", req.params.id);
-  
-    Todo.deleteMany({ isCompleted: true }, (err, deleteObj) => {
+    }
+  );
+});
+
+app.put("/tasks/:id/:isCompleted", (req, res) => {
+  console.log("124:", req.params);
+  Todo.updateOne(
+    { _id: req.params.id },
+    { isCompleted: req.params.isCompleted },
+    (err, updateObj) => {
       if (err) {
-        console.log("ERROR: ", err);
+        // console.log("ERROR: ", err);
+        res.status(400).json(err);
       } else {
-        console.log(deleteObj);
-        deleteObj.deletedCount === 0
-          ? res.status(404).json("There is no completed todo found")
-          : res.json("Delete all completed todos successfully");
+        console.log(updateObj);
+        updateObj.modifiedCount === 1
+          ? res.json("Update one todo successfully")
+          : res.status(404).json("This todo is not found");
       }
-    });
+    }
+  );
+});
+
+app.listen(5000, () => {
+  console.log("SERVER IS WORKING ..");
+});
+
+/*
+the up endpoint is replace to these two
+app.get("/completed", (req, res) => {
+  Todo.find({ isCompleted: true }, (err, data) => {
+    if (err) {
+      console.log("ERR", err);
+    } else {
+      // console.log(data);
+      res.json(data);
+    }
   });
-  app.put("/tasks/:id", (req, res) => {
-    // console.log("37:", req.params.id);
-    Todo.updateOne(
-      { _id: req.params.id },
-      { title: req.body.newTitle },
-      (err, updateObj) => {
-        if (err) {
-          // console.log("ERROR: ", err);
-          res.status(400).json(err);
-        } else {
-          console.log(updateObj);
-          updateObj.modifiedCount === 1
-            ? res.json("Update one todo successfully")
-            : res.status(404).json("This todo is not found");
-        }
-      }
-    );
+});
+app.get("/not_completed", (req, res) => {
+  Todo.find({ isCompleted: false }, (err, data) => {
+    if (err) {
+      console.log("ERR", err);
+    } else {
+      // console.log(data);
+      res.json(data);
+    }
   });
-  app.put("/tasks/:id/:isCompleted", (req, res) => {
-    console.log("124:", req.params);
-    Todo.updateOne(
-      { _id: req.params.id },
-      { isCompleted: req.params.isCompleted },
-      (err, updateObj) => {
-        if (err) {
-          // console.log("ERROR: ", err);
-          res.status(400).json(err);
-        } else {
-          console.log(updateObj);
-          updateObj.modifiedCount === 1
-            ? res.json("Update one todo successfully")
-            : res.status(404).json("This todo is not found");
-        }
-      }
-    );
-  });
-  
-app.listen(3000,()=>{
-    console.log('Work')
-})
+});
+*/
