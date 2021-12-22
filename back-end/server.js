@@ -3,12 +3,14 @@ const app=exp()
 app.use(exp.json())
 const db=require('./db')
 const Todo=require('./todo')
-app.get('/getProject',(req,res)=>
+const cors=require('cors')
+app.use(cors())
+/*app.get('/tasks',(req,res)=>
 {
     res.json('work')
 
-})
-app.get('/get2',(req,res)=>
+})*/
+app.get('/tasks',(req,res)=>
 {
     Todo.find({},(err,data)=>{
         if(err)
@@ -22,7 +24,7 @@ app.get('/get2',(req,res)=>
     })
 
 })
-app.get('/get3',(req,res)=>
+app.get('/tasks',(req,res)=>
 {
     Todo.find({isCompleted:"true"},(err,data)=>{
         if(err)
@@ -37,7 +39,7 @@ app.get('/get3',(req,res)=>
     })
 
 })
-app.get('/get4',(req,res)=>
+app.get('/tasks',(req,res)=>
 {
     Todo.find({isCompleted:"false"},(err,data)=>{
         if(err)
