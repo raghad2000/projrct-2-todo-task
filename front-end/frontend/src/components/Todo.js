@@ -13,6 +13,9 @@ export default function Todo(props) {
       <button onClick={() => {
         props.deleteTodo(_id)
       }}>X</button>
+     
+      
     </div>
+ 
   );
 }
