@@ -83,7 +83,6 @@ export default function App() {
   ));
   return (
     <div className="App">
-      <p>app</p>
       {/* click on button should bring all Data */}
       <button onClick={getData}>GET TASKS</button>
       <Add createFunc={postNewTodo} />
