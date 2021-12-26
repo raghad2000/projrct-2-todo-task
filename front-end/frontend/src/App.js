@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
-
+import Register from "./components/Register";
 import axios from "axios";
 import Todo from "./components/Todo";
 import Add from "./components/Add";
@@ -133,7 +133,7 @@ export default function App() {
       >
         GET PENDING
       </button>
-
+<Register/>
       <Add createFunc={postNewTodo} />
       {mapOverTasks}
     </div>
