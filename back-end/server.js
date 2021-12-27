@@ -4,10 +4,27 @@ const app = express();
 
 const db = require("./db");
 const Todo = require("./todo");
+const User = require("./user");
 // console.log(Todo);
 
 app.use(express.json());
 app.use(cors());
+
+// use uuid and array if mongoDB didn't work for you
+const arrServer = [
+  {
+    _id: "61c420a96096f17c23ba1ab7",
+    title: "444444444",
+    isCompleted: false,
+    __v: 0,
+  },
+  {
+    _id: "61c420ac6096f17c23ba1abd",
+    title: "5555555555555",
+    isCompleted: true,
+    __v: 0,
+  },
+];
 
 app.get("/", (req, res) => {
   res.json("GET / is Working");
@@ -16,6 +33,9 @@ app.get("/", (req, res) => {
 // CRUD: Create, Read, Update, Delete
 
 app.get("/tasks", (req, res) => {
+  // use this if mongoDB didn't work for you
+  // res.json(arrServer);
+
   Todo.find({}, (err, data) => {
     if (err) {
       console.log("ERROR: ", err);
@@ -116,6 +136,8 @@ app.put("/tasks/:id/:isCompleted", (req, res) => {
     }
   );
 });
+
+// USER
 app.post("/users/register", (req, res) => {
   User.create(req.body, (err, newUser) => {
     if (err) {
@@ -156,6 +178,7 @@ app.post("/users/login", (req, res) => {
     }
   });
 });
+
 app.listen(5000, () => {
   console.log("SERVER IS WORKING ..");
 });
