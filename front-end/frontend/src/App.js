@@ -1,14 +1,18 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
-import Register from "./components/Register";
+
 import axios from "axios";
+import { Routes, Route, Link } from "react-router-dom";
+
 import Todo from "./components/Todo";
 import Add from "./components/Add";
+import Register from "./components/Register";
 import Login from "./components/Login";
 
 export default function App() {
   const [tasks, setTasks] = useState([]);
-
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [username, setUsername] = useState("");
   useEffect(() => {
     getData();
   }, []);
@@ -59,21 +63,6 @@ export default function App() {
         console.log("ERR: ", err);
       });
   };
-  const deleteTasks = () => {
-    axios
-      .delete(`http://localhost:5000/tasks`)
-      //     (`http://localhost:5000/tasks/${id}`)
-      .then((response) => {
-        // console.log('RESPONSE: ', response);
-        console.log("DATA: ", response.data);
-        getData();
-        // change react hooks state using spread operator
-      })
-      .catch((err) => {
-        console.log("ERR: ", err);
-      });
-  };
-
 
   const toggleTodo = (id, newStatus) => {
     axios
@@ -89,7 +78,20 @@ export default function App() {
       });
   };
 
-  
+  const deleteTasks = () => {
+    axios
+      .delete(`http://localhost:5000/tasks`)
+      //     (`http://localhost:5000/tasks/${id}`)
+      .then((response) => {
+        // console.log('RESPONSE: ', response);
+        console.log("DATA: ", response.data);
+        getData();
+        // change react hooks state using spread operator
+      })
+      .catch((err) => {
+        console.log("ERR: ", err);
+      });
+  };
 
   const filterData = (status) => {
     // should bring data using axios
@@ -108,7 +110,6 @@ export default function App() {
   const mapOverTasks = tasks.map((taskObj, i) => (
     <Todo
       key={taskObj._id}
-      //عشان يحذف بالid
       task={taskObj}
       deleteTodo={deleteTodo}
       toggleTodo={toggleTodo}
@@ -116,28 +117,51 @@ export default function App() {
   ));
   return (
     <div className="App">
-      <p>app</p>
-      {/* click on button should bring all Data */}
-      <button onClick={getData}>GET TASKS</button>
-      <button onClick={deleteTasks}>DELETE Completed tasks </button>
-      <button
-        onClick={() => {
-          filterData(true);
-        }}
-      >
-        GET DONE
-      </button>
-      <button
-        onClick={() => {
-          filterData(false);
-        }}
-      >
-        GET PENDING
-      </button>
-<Register/>
-<Login/>
-      <Add createFunc={postNewTodo} />
-      {mapOverTasks}
+      <p>APP</p>
+      <p>Hellow {username}</p>
+
+      <nav>
+        <Link to="/home">Home</Link> {" | "}
+        <Link to="/login">Login</Link> {" | "}
+        <Link to="/register">Register</Link>
+      </nav>
+      <br />
+
+      <Routes>
+        <Route
+          path="/home"
+          element={
+            <div className="Home">
+              {/* click on button should bring all Data */}
+              <button onClick={getData}>GET TASKS</button>
+              <button onClick={deleteTasks}>DELETE Completed tasks </button>
+              <button
+                onClick={() => {
+                  filterData(true);
+                }}
+              >
+                GET DONE
+              </button>
+              <button
+                onClick={() => {
+                  filterData(false);
+                }}
+              >
+                GET PENDING
+              </button>
+              <Add createFunc={postNewTodo} />
+              {mapOverTasks}
+            </div>
+          }
+        />
+        <Route
+          path="/login"
+          element={
+            <Login setIsLoggedIn={setIsLoggedIn} setUsername={setUsername} />
+          }
+        />
+        <Route path="/register" element={<Register />} />
+      </Routes>
     </div>
   );
 }
