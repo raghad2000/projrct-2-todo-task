@@ -19,7 +19,7 @@ export default function Add(props) {
           setNewTitle(e.target.value);
         }}
       />
-      <button onClick={createNewTodo}>+</button>
+      <button onClick={createNewTodo} className="btn btn-outline-light">+</button>
     </div>
   );
 }
