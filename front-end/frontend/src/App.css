@@ -1,32 +1,19 @@
-.App{
-  border:double peru 5px;
-  border-radius: 30px;
-  background-color: slategrey;
-  text-align: center;
-  font-style: oblique ;
-  font-size: small;
-}
-*{
-  background-color:dimgrey;
+.App {
+  border: red solid 5px;
 }
 
-.Todo{
-  border:darkcyan;
-  border: peru 3px dotted  ;
-  margin:5px;
-  background-color:rgb(134, 155, 175);
-  border-radius: 30px;
- 
-
+.Todo {
+  border: blue solid 3px;
 }
-.Todo span{
+.Todo span {
   margin: 0px 10px 0px 10px;
 }
 
+.Add,
+.Register {
+  border: green solid 3px;
+}
 
-.Add{
-  border: peru 3px ;
-  background-color: slategrey;
-  border-radius: 30px;
- 
+.Login form {
+  max-width: 75%;
 }

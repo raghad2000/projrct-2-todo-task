@@ -112,7 +112,6 @@ export default function App() {
   const logoutFunc = () => {
     setIsLoggedIn(false);
     setUsername("");
-    
   };
   const mapOverTasks = tasks.map((taskObj, i) => (
     <Todo
@@ -123,17 +122,17 @@ export default function App() {
     />
   ));
   return (
-    <div className="App">
-      <p>APP</p>
-      <p>Name: {username}</p>
+    <div className="">
+      {/* <p>APP</p> */}
+      {/* <p>Name: {username}</p> */}
 
-      <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container-fluid">
-          <a class="navbar-brand" href="#">
+      <nav className="navbar navbar-expand-lg navbar-light bg-light m-3">
+        <div className="container-fluid">
+          <a className="navbar-brand" href="#">
             Todos
           </a>
           <button
-            class="navbar-toggler"
+            className="navbar-toggler"
             type="button"
             data-bs-toggle="collapse"
             data-bs-target="#navbarNav"
@@ -141,21 +140,21 @@ export default function App() {
             aria-expanded="false"
             aria-label="Toggle navigation"
           >
-            <span class="navbar-toggler-icon"></span>
+            <span className="navbar-toggler-icon"></span>
           </button>
-          <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
-              <li class="nav-item">
+          <div className="collapse navbar-collapse" id="navbarNav">
+            <ul className="navbar-nav">
+              <li className="nav-item">
                 <Link to="/home" className="nav-link">
                   Home
                 </Link>
               </li>
-              <li class="nav-item">
+              <li className="nav-item">
                 <Link to="/login" className="nav-link">
                   Login
                 </Link>
               </li>
-              <li class="nav-item">
+              <li className="nav-item">
                 <Link to="/register" className="nav-link">
                   Register
                 </Link>
@@ -166,31 +165,54 @@ export default function App() {
       </nav>
 
       <br />
-      <button onClick={logoutFunc} className="btn btn-outline-light">Logout</button>
+      <div className="m-3 text-center">
+        <button onClick={logoutFunc} class="btn btn-info m-2">
+          Logout
+        </button>
+
+        <button
+          type="button"
+          class="btn btn btn-dark"
+          data-bs-toggle="popover"
+          title="Todo List"
+          data-bs-content="Welcome to Todo List Web Application"
+        >
+          {username ? "Welcome " + username : "Please Login"}{" "}
+        </button>
+      </div>
       <Routes>
         <Route
           path="/home"
           element={
-            <div className="Home">
-              {/* click on button should bring all Data */}
-              <button onClick={getData} className="btn btn-outline-light">GET TASKS</button>
-              <button onClick={deleteTasks} className="btn btn-outline-light">DELETE Completed tasks </button>
-              <button className="btn btn-outline-light"
-                onClick={() => {
-                  filterData(true);
-                }}
-              >
-                GET DONE
-              </button>
-              <button className="btn btn-outline-light"
-                onClick={() => {
-                  filterData(false);
-                }}
-              >
-                GET PENDING
-              </button>
+            <div className="Home m-3">
+              <div className="Home mb-3 text-center">
+                {/* click on button should bring all Data */}
+                <button onClick={getData} class="btn btn-primary m-2">
+                  GET TASKS
+                </button>
+                <button onClick={deleteTasks} class="btn btn-danger m-2">
+                  DELETE Completed Tasks{" "}
+                </button>
+                <button
+                  onClick={() => {
+                    filterData(true);
+                  }}
+                  class="btn btn-outline-success m-2"
+                >
+                  GET DONE
+                </button>
+                <button
+                  onClick={() => {
+                    filterData(false);
+                  }}
+                  class="btn btn-outline-warning m-2"
+                >
+                  GET PENDING
+                </button>
+              </div>
+
               <Add createFunc={postNewTodo} />
-              {mapOverTasks}
+              <div class="list-group">{mapOverTasks}</div>
             </div>
           }
         />
